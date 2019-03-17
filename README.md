@@ -7,7 +7,7 @@ CerebralCortex-RESTClient is part of our [CerebralCortex cloud platform](https:/
 
 ## Documentation
 
-- [Source code documentation](https://cerebralcortex-kernel.readthedocs.io/en/latest/)
+- [Source code documentation](https://cerebralcortex-restclient.readthedocs.io/en/latest/)
 
 ## Installation
 CerebralCortex-RESTClient requires minimum [Python3.6](https://www.python.org/downloads/release/python-360/). To install CerebralCortex-RESTClient as an API:
@@ -16,12 +16,7 @@ CerebralCortex-RESTClient requires minimum [Python3.6](https://www.python.org/do
 
 - Note: please use appropriate pip (e.g., pip, pip3, pip3.6 etc.) installed on your machine 
 
-### Dependencies
-
--  `Python3.6`
-
-   -  Make sure pip version matches Python version
-   
+  
 
 ## Contributing
 Please read our [Contributing Guidelines](https://md2k.org/contributing/contributing-guidelines.html) for details on the process for submitting pull requests to us.
