@@ -25,12 +25,12 @@
 
 
 import json
-
 import requests
 
-#------------------------ USER ROUTE ------------------------#
 
-def register_user(url:str, user_metadata:dict):
+# ------------------------ USER ROUTE ------------------------#
+
+def register_user(url: str, user_metadata: dict):
     """
 
     Args:
@@ -43,6 +43,7 @@ def register_user(url:str, user_metadata:dict):
         Exception: if user registration fails
 
     Examples:
+        >>> from cerebralcortex_rest import register_user
         >>> register_user(url="http://localhost/api/v3/user/register", user_metadata={
                                   "username": "string",
                                   "password": "string",
@@ -83,6 +84,7 @@ def login_user(url: str, username: str, password: str):
         Exception: if authentication fails
 
     Examples:
+        >>> from cerebralcortex_rest import login_user
         >>> login_user(url="http://localhost/api/v3/user/login", username="demo", password="demo")
 
     """
@@ -96,7 +98,7 @@ def login_user(url: str, username: str, password: str):
         raise Exception("Login failed. " + str(e))
 
 
-def get_user_config(url:str, auth_token):
+def get_user_config(url: str, auth_token):
     """
     Get user metadata from CC-ApiServer
 
@@ -111,6 +113,7 @@ def get_user_config(url:str, auth_token):
         Exception: if it fails to get user configs
 
     Examples:
+        >>> from cerebralcortex_rest import get_user_config
         >>> get_user_config(url="http://localhost/api/v3/user/config", auth_token="jwt-auth-tocken")
 
     """
@@ -122,7 +125,7 @@ def get_user_config(url:str, auth_token):
         raise Exception("Failed to get user configs. " + str(e))
 
 
-#------------------------ STREAM ROUTE ------------------------#
+# ------------------------ STREAM ROUTE ------------------------#
 
 def register_stream(url: str, auth_token: str, stream_metadata: str):
     """
@@ -140,6 +143,7 @@ def register_stream(url: str, auth_token: str, stream_metadata: str):
         Exception: if stream registration fails
 
     Examples:
+        >>> from cerebralcortex_rest import register_stream
         >>> register_stream(url="http://localhost/api/v3/stream/register", auth_token="jwt-auth-token",
                             stream_metadata={
                                           "name": "string",
@@ -191,7 +195,7 @@ def register_stream(url: str, auth_token: str, stream_metadata: str):
         raise Exception("Stream registration failed. " + str(e))
 
 
-def upload_stream_data(url: str, auth_token:str, data_file_path: str):
+def upload_stream_data(url: str, auth_token: str, data_file_path: str):
     """
     Upload stream data to cerebralcortex storage using CC-ApiServer
 
@@ -207,6 +211,7 @@ def upload_stream_data(url: str, auth_token:str, data_file_path: str):
         Exception: if stream data upload fails
 
     Examples:
+        >>> from cerebralcortex_rest import upload_stream_data
         >>> upload_stream_data(url="http://localhost/api/v3/stream/{metadata_hash}", auth_token="jwt-aut-token")
 
     """
@@ -222,7 +227,7 @@ def upload_stream_data(url: str, auth_token:str, data_file_path: str):
         raise Exception("Stream data upload failed. " + str(e))
 
 
-def get_stream_metadata(url:str, auth_token:str):
+def get_stream_metadata(url: str, auth_token: str):
     """
     Get stream metadata from CC-ApiServer
 
@@ -237,6 +242,7 @@ def get_stream_metadata(url:str, auth_token:str):
         Exception: if it fails to get stream metadata
 
     Examples:
+        >>> from cerebralcortex_rest import get_stream_metadata
         >>> get_stream_metadata(url="http://localhost/api/v3/stream/metadata/{stream_name}", auth_token="jwt-aut-token")
     """
     try:
@@ -246,7 +252,8 @@ def get_stream_metadata(url:str, auth_token:str):
     except Exception as e:
         raise Exception("Failed to get stream metadata. " + str(e))
 
-def get_stream_data(url:str, auth_token:str):
+
+def get_stream_data(url: str, auth_token: str):
     """
     Get stream data from CC-ApiServer
 
@@ -261,6 +268,7 @@ def get_stream_data(url:str, auth_token:str):
         Exception: if it fails to get stream data
 
     Examples:
+        >>> from cerebralcortex_rest import get_stream_data
         >>> get_stream_data(url="http://localhost/api/v3/stream/data/{stream_name}", auth_token="jwt-aut-token")
     """
     try:
@@ -270,9 +278,10 @@ def get_stream_data(url:str, auth_token:str):
     except Exception as e:
         raise Exception("Failed to get stream metadata. " + str(e))
 
-#------------------------ OBJECT ROUTE ------------------------#
 
-def get_bucket_list(url:str, auth_token:str):
+# ------------------------ OBJECT ROUTE ------------------------#
+
+def get_bucket_list(url: str, auth_token: str):
     """
     Get buckets list from CC-ApiServer
 
@@ -287,6 +296,7 @@ def get_bucket_list(url:str, auth_token:str):
         Exception: if it fails to get buckets list
 
     Examples:
+        >>> from cerebralcortex_rest import get_bucket_list
         >>> get_bucket_list(url="http://localhost/api/v3/bucket/", auth_token="jwt-aut-token")
 
     """
@@ -298,7 +308,7 @@ def get_bucket_list(url:str, auth_token:str):
         raise Exception("Failed to get buckets list. " + str(e))
 
 
-def get_objects_list_in_bucket(url:str, auth_token:str):
+def get_objects_list_in_bucket(url: str, auth_token: str):
     """
     Get objects list in a bucket from CC-ApiServer
 
@@ -313,6 +323,7 @@ def get_objects_list_in_bucket(url:str, auth_token:str):
         Exception: if it fails to get objects list in a buckets
 
     Examples:
+        >>> from cerebralcortex_rest import get_objects_list_in_bucket
         >>> get_objects_list_in_bucket(url="http://localhost/api/v3/bucket/{bucket_name}", auth_token="jwt-aut-token")
 
     """
@@ -324,7 +335,7 @@ def get_objects_list_in_bucket(url:str, auth_token:str):
         raise Exception("Failed to objects list of a bucket. " + str(e))
 
 
-def get_objects_stats(url:str, auth_token:str):
+def get_objects_stats(url: str, auth_token: str):
     """
     Get object stats from CC-ApiServer
 
@@ -339,6 +350,7 @@ def get_objects_stats(url:str, auth_token:str):
         Exception: if it fails to get object stats
 
     Examples:
+        >>> from cerebralcortex_rest import get_objects_stats
         >>> get_objects_stats(url="http://localhost/api/v3/bucket/stats/{bucket_name}/{object_name}", auth_token="jwt-aut-token")
     """
     try:
@@ -348,7 +360,8 @@ def get_objects_stats(url:str, auth_token:str):
     except Exception as e:
         raise Exception("Failed to object's stats. " + str(e))
 
-def get_object(url:str, auth_token:str):
+
+def get_object(url: str, auth_token: str):
     """
     Get object stats from CC-ApiServer
 
@@ -363,6 +376,7 @@ def get_object(url:str, auth_token:str):
         Exception: if it fails to get object
 
     Examples:
+        >>> from cerebralcortex_rest import get_object
         >>> get_object(url="http://localhost/api/v3/bucket/{bucket_name}/{object_name}", auth_token="jwt-aut-token")
 
     """
@@ -372,4 +386,3 @@ def get_object(url:str, auth_token:str):
         return json.loads(response.content)
     except Exception as e:
         raise Exception("Failed to object's stats. " + str(e))
-#get_stream_data("http://0.0.0.0:8089/api/v3/stream/data/accelerometer--org.md2k.phonesensor--phone","eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InN0cmluZyIsInRva2VuX2V4cGlyZV9hdCI6IjIwMTktMDMtMTcgMDQ6NDQ6MTMuODk5NDYwIiwidG9rZW5faXNzdWVkX2F0IjoiMjAxOS0wMy0xNiAxNzozNzozMy44OTk0NjAifQ.cEZyVgwbqbRk3izYOXbFUKHWR4xOCOlN53_lCipX_dE")
