@@ -24,10 +24,50 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-import requests
 import json
 
-def login_user(url:str, username:str, password:str):
+import requests
+
+#------------------------ USER ROUTE ------------------------#
+
+def register_user(url:str, user_metadata:dict):
+    """
+
+    Args:
+        url (str): url of user register route of CC-ApiServer
+        user_metadata (dict): metadata of a user
+    Returns:
+        dict: HTTP response.content
+
+    Raises:
+        Exception: if user registration fails
+
+    Examples:
+        >>> register_user(url="http://localhost/api/v3/user/register", user_metadata={
+                                  "username": "string",
+                                  "password": "string",
+                                  "user_role": "string",
+                                  "user_metadata": {
+                                    "key": "string",
+                                    "value": "string"
+                                  },
+                                  "user_settings": {
+                                    "key": "string",
+                                    "value": "string"
+                                  }
+                                })
+    """
+    try:
+        if isinstance(user_metadata, dict):
+            raise Exception("user_metadata object should be a dict.")
+        headers = {"Accept": "application/json"}
+        response = requests.post(url, json=user_metadata, headers=headers)
+        return json.loads(response.content)
+    except Exception as e:
+        raise Exception("Login failed. " + str(e))
+
+
+def login_user(url: str, username: str, password: str):
     """
     Send credentials to CC-ApiServer and Authenticate a user
 
@@ -42,17 +82,49 @@ def login_user(url:str, username:str, password:str):
     Raises:
         Exception: if authentication fails
 
+    Examples:
+        >>> login_user(url="http://localhost/api/v3/user/login", username="demo", password="demo")
+
     """
     try:
-        data = {"username": str(username),"password": str(password)}
+        data = {"username": str(username), "password": str(password)}
         headers = {"Accept": "application/json"}
         response = requests.post(url, json=data, headers=headers)
 
         return json.loads(response.content)
     except Exception as e:
-        raise Exception("Login failed. "+str(e))
+        raise Exception("Login failed. " + str(e))
 
-def register_stream(url:str, auth_token:str, stream_metadata:str):
+
+def get_user_config(url:str, auth_token):
+    """
+    Get user metadata from CC-ApiServer
+
+    Args:
+        url (str): url of user-config [GET] route of CC-ApiServer
+        auth_token (str): auth token of a user
+
+    Returns:
+        dict: HTTP response.content
+
+    Raises:
+        Exception: if it fails to get user configs
+
+    Examples:
+        >>> get_user_config(url="http://localhost/api/v3/user/config", auth_token="jwt-auth-tocken")
+
+    """
+    try:
+        headers = {"Accept": "application/json", "Authorization": auth_token}
+        response = requests.get(url, headers=headers)
+        return json.loads(response.content)
+    except Exception as e:
+        raise Exception("Failed to get user configs. " + str(e))
+
+
+#------------------------ STREAM ROUTE ------------------------#
+
+def register_stream(url: str, auth_token: str, stream_metadata: str):
     """
     Send stream metadata to CC-ApiServer for registration
 
@@ -67,6 +139,48 @@ def register_stream(url:str, auth_token:str, stream_metadata:str):
     Raises:
         Exception: if stream registration fails
 
+    Examples:
+        >>> register_stream(url="http://localhost/api/v3/stream/register", auth_token="jwt-auth-token",
+                            stream_metadata={
+                                          "name": "string",
+                                          "description": "string",
+                                          "data_descriptor": [
+                                            {
+                                              "name": "string",
+                                              "type": "string",
+                                              "attributes": [
+                                                {
+                                                  "key": "string",
+                                                  "value": "string"
+                                                }
+                                              ]
+                                            }
+                                          ],
+                                          "modules": [
+                                            {
+                                              "name": "string",
+                                              "version": "string",
+                                              "authors": [
+                                                {
+                                                  "developer_name": "string",
+                                                  "email": "string",
+                                                  "attributes": [
+                                                    {
+                                                      "key": "string",
+                                                      "value": "string"
+                                                    }
+                                                  ]
+                                                }
+                                              ],
+                                              "attributes": [
+                                                {
+                                                  "key": "string",
+                                                  "value": "string"
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        })
 
     """
     try:
@@ -74,17 +188,16 @@ def register_stream(url:str, auth_token:str, stream_metadata:str):
         response = requests.post(url, json=stream_metadata, headers=headers)
         return json.loads(response.content)
     except Exception as e:
-        raise Exception("Stream registration failed. "+str(e))
+        raise Exception("Stream registration failed. " + str(e))
 
-def upload_stream_data(base_url:str, username:str, password:str, stream_metadata:dict, data_file_path:str):
+
+def upload_stream_data(url: str, auth_token:str, data_file_path: str):
     """
     Upload stream data to cerebralcortex storage using CC-ApiServer
 
     Args:
-        base_url (str): base url of CerebralCortex-APIServer. For example, http://localhost/
-        username (str): username
-        password (str): password of the user
-        stream_metadata (dict): metadata of the stream
+        url (str): base url of CerebralCortex-APIServer. For example, http://localhost/
+        auth_token (str): auth token of a user
         data_file_path (str): stream data file path that needs to be uploaded
 
     Returns:
@@ -93,24 +206,170 @@ def upload_stream_data(base_url:str, username:str, password:str, stream_metadata
     Raises:
         Exception: if stream data upload fails
 
+    Examples:
+        >>> upload_stream_data(url="http://localhost/api/v3/stream/{metadata_hash}", auth_token="jwt-aut-token")
+
     """
-    login_url = base_url+"api/v3/user/login"
-    register_stream_url = base_url+"api/v3/stream/register"
-
-    auth = login_user(login_url, username, password)
-    status = register_stream(register_stream_url, auth.get("auth_token"), stream_metadata)
-
-    stream_upload_url = base_url+"api/v3/stream/"+status.get("hash_id")
-
     try:
         f = open(data_file_path, "rb")
         files = {"file": (data_file_path, f)}
 
-        headers = {"Accept": "application/json", "Authorization": auth.get("auth_token")}
-        response = requests.put(stream_upload_url, files=files, headers=headers)
+        headers = {"Accept": "application/json", "Authorization": auth_token}
+        response = requests.put(url, files=files, headers=headers)
 
         return json.loads(response.content)
     except Exception as e:
-        raise Exception("Stream data upload failed. "+str(e))
+        raise Exception("Stream data upload failed. " + str(e))
 
 
+def get_stream_metadata(url:str, auth_token:str):
+    """
+    Get stream metadata from CC-ApiServer
+
+    Args:
+        url (str): url of user-config [GET] route of CC-ApiServer
+        auth_token (str): auth token of a user
+
+    Returns:
+        dict: HTTP response.content
+
+    Raises:
+        Exception: if it fails to get stream metadata
+
+    Examples:
+        >>> get_stream_metadata(url="http://localhost/api/v3/stream/metadata/{stream_name}", auth_token="jwt-aut-token")
+    """
+    try:
+        headers = {"Accept": "application/json", "Authorization": auth_token}
+        response = requests.get(url, headers=headers)
+        return json.loads(response.content)
+    except Exception as e:
+        raise Exception("Failed to get stream metadata. " + str(e))
+
+def get_stream_data(url:str, auth_token:str):
+    """
+    Get stream data from CC-ApiServer
+
+    Args:
+        url (str): url of user-config [GET] route of CC-ApiServer
+        auth_token (str): auth token of a user
+
+    Returns:
+        dict: HTTP response.content
+
+    Raises:
+        Exception: if it fails to get stream data
+
+    Examples:
+        >>> get_stream_data(url="http://localhost/api/v3/stream/data/{stream_name}", auth_token="jwt-aut-token")
+    """
+    try:
+        headers = {"Accept": "application/json", "Authorization": auth_token}
+        response = requests.get(url, headers=headers)
+        return response
+    except Exception as e:
+        raise Exception("Failed to get stream metadata. " + str(e))
+
+#------------------------ OBJECT ROUTE ------------------------#
+
+def get_bucket_list(url:str, auth_token:str):
+    """
+    Get buckets list from CC-ApiServer
+
+    Args:
+        url (str): url of object [GET] route of CC-ApiServer
+        auth_token (str): auth token of a user
+
+    Returns:
+        dict: HTTP response.content
+
+    Raises:
+        Exception: if it fails to get buckets list
+
+    Examples:
+        >>> get_bucket_list(url="http://localhost/api/v3/bucket/", auth_token="jwt-aut-token")
+
+    """
+    try:
+        headers = {"Accept": "application/json", "Authorization": auth_token}
+        response = requests.get(url, headers=headers)
+        return json.loads(response.content)
+    except Exception as e:
+        raise Exception("Failed to get buckets list. " + str(e))
+
+
+def get_objects_list_in_bucket(url:str, auth_token:str):
+    """
+    Get objects list in a bucket from CC-ApiServer
+
+    Args:
+        url (str): url of object's list [GET] route of CC-ApiServer
+        auth_token (str): auth token of a user
+
+    Returns:
+        dict: HTTP response.content
+
+    Raises:
+        Exception: if it fails to get objects list in a buckets
+
+    Examples:
+        >>> get_objects_list_in_bucket(url="http://localhost/api/v3/bucket/{bucket_name}", auth_token="jwt-aut-token")
+
+    """
+    try:
+        headers = {"Accept": "application/json", "Authorization": auth_token}
+        response = requests.get(url, headers=headers)
+        return json.loads(response.content)
+    except Exception as e:
+        raise Exception("Failed to objects list of a bucket. " + str(e))
+
+
+def get_objects_stats(url:str, auth_token:str):
+    """
+    Get object stats from CC-ApiServer
+
+    Args:
+        url (str): url of object's stat [GET] route of CC-ApiServer
+        auth_token (str): auth token of a user
+
+    Returns:
+        dict: HTTP response.content
+
+    Raises:
+        Exception: if it fails to get object stats
+
+    Examples:
+        >>> get_objects_stats(url="http://localhost/api/v3/bucket/stats/{bucket_name}/{object_name}", auth_token="jwt-aut-token")
+    """
+    try:
+        headers = {"Accept": "application/json", "Authorization": auth_token}
+        response = requests.get(url, headers=headers)
+        return json.loads(response.content)
+    except Exception as e:
+        raise Exception("Failed to object's stats. " + str(e))
+
+def get_object(url:str, auth_token:str):
+    """
+    Get object stats from CC-ApiServer
+
+    Args:
+        url (str): url of object (download) [GET] route of CC-ApiServer
+        auth_token (str): auth token of a user
+
+    Returns:
+        dict: HTTP response.content
+
+    Raises:
+        Exception: if it fails to get object
+
+    Examples:
+        >>> get_object(url="http://localhost/api/v3/bucket/{bucket_name}/{object_name}", auth_token="jwt-aut-token")
+
+    """
+    try:
+        headers = {"Accept": "application/json", "Authorization": auth_token}
+        response = requests.get(url, headers=headers)
+        return json.loads(response.content)
+    except Exception as e:
+        raise Exception("Failed to object's stats. " + str(e))
+#get_stream_data("http://0.0.0.0:8089/api/v3/stream/data/accelerometer--org.md2k.phonesensor--phone","eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InN0cmluZyIsInRva2VuX2V4cGlyZV9hdCI6IjIwMTktMDMtMTcgMDQ6NDQ6MTMuODk5NDYwIiwidG9rZW5faXNzdWVkX2F0IjoiMjAxOS0wMy0xNiAxNzozNzozMy44OTk0NjAifQ.cEZyVgwbqbRk3izYOXbFUKHWR4xOCOlN53_lCipX_dE")

@@ -17,16 +17,16 @@ with open(path.join(here, 'README.md')) as f:
 setup(
     name="cerebralcortex-restclient",
 
-    version='3.0.0',
+    version='3.0.0a1',
 
-    description='Backend data analytics platform for MD2K software',
+    description='REST client for CerebralCortex-APIServer.',
     long_description=long_description,
 
     author='MD2K.org',
     author_email='dev@md2k.org',
 
     license='BSD2',
-    url = 'https://github.com/MD2Korg/CerebralCortex/',
+    url = 'https://github.com/MD2Korg/CerebralCortex-RESTClient/',
 
     classifiers=[
 
