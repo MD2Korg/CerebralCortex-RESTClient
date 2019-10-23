@@ -34,7 +34,8 @@ def register_user(url: str, user_metadata: dict):
     """
 
     Args:
-        url (str): url of user register route of CC-ApiServer
+        url (str): url of user register route of CC-ApiServer. "default" in url is a study_name. change it if you have created a different study_name.
+         study_name must exist
         user_metadata (dict): metadata of a user
     Returns:
         dict: HTTP response.content
@@ -44,7 +45,7 @@ def register_user(url: str, user_metadata: dict):
 
     Examples:
         >>> from cerebralcortex_rest import register_user
-        >>> register_user(url="http://localhost/api/v3/user/register", user_metadata={
+        >>> register_user(url="http://localhost/api/v3/user/default/register", user_metadata={
                                   "username": "string",
                                   "password": "string",
                                   "user_role": "string",
@@ -59,7 +60,7 @@ def register_user(url: str, user_metadata: dict):
                                 })
     """
     try:
-        if isinstance(user_metadata, dict):
+        if not isinstance(user_metadata, dict):
             raise Exception("user_metadata object should be a dict.")
         headers = {"Accept": "application/json"}
         response = requests.post(url, json=user_metadata, headers=headers)
@@ -70,7 +71,8 @@ def register_user(url: str, user_metadata: dict):
 
 def login_user(url: str, username: str, password: str):
     """
-    Send credentials to CC-ApiServer and Authenticate a user
+    Send credentials to CC-ApiServer and Authenticate a user. "default" in url is a study_name. change it if you have created a different study_name.
+         study_name must exist
 
     Args:
         url (str): url of login route of CC-ApiServer
@@ -85,7 +87,7 @@ def login_user(url: str, username: str, password: str):
 
     Examples:
         >>> from cerebralcortex_rest import login_user
-        >>> login_user(url="http://localhost/api/v3/user/login", username="demo", password="demo")
+        >>> login_user(url="http://localhost/api/v3/user/default/login", username="demo", password="demo")
 
     """
     try:
@@ -100,7 +102,8 @@ def login_user(url: str, username: str, password: str):
 
 def get_user_config(url: str, auth_token):
     """
-    Get user metadata from CC-ApiServer
+    Get user metadata from CC-ApiServer. "default" in url is a study_name. change it if you have created a different study_name.
+         study_name must exist
 
     Args:
         url (str): url of user-config [GET] route of CC-ApiServer
@@ -114,7 +117,7 @@ def get_user_config(url: str, auth_token):
 
     Examples:
         >>> from cerebralcortex_rest import get_user_config
-        >>> get_user_config(url="http://localhost/api/v3/user/config", auth_token="jwt-auth-tocken")
+        >>> get_user_config(url="http://localhost/api/v3/user/default/config", auth_token="jwt-auth-tocken")
 
     """
     try:
@@ -129,7 +132,8 @@ def get_user_config(url: str, auth_token):
 
 def register_stream(url: str, auth_token: str, stream_metadata: str):
     """
-    Send stream metadata to CC-ApiServer for registration
+    Send stream metadata to CC-ApiServer for registration. "default" in url is a study_name. change it if you have created a different study_name.
+         study_name must exist
 
     Args:
         url (str): url of stream-registration route of CC-ApiServer
@@ -144,7 +148,7 @@ def register_stream(url: str, auth_token: str, stream_metadata: str):
 
     Examples:
         >>> from cerebralcortex_rest import register_stream
-        >>> register_stream(url="http://localhost/api/v3/stream/register", auth_token="jwt-auth-token",
+        >>> register_stream(url="http://localhost/api/v3/stream/default/register", auth_token="jwt-auth-token",
                             stream_metadata={
                                           "name": "string",
                                           "description": "string",
@@ -197,7 +201,8 @@ def register_stream(url: str, auth_token: str, stream_metadata: str):
 
 def upload_stream_data(url: str, auth_token: str, data_file_path: str):
     """
-    Upload stream data to cerebralcortex storage using CC-ApiServer
+    Upload stream data to cerebralcortex storage using CC-ApiServer. "default" in url is a study_name. change it if you have created a different study_name.
+         study_name must exist
 
     Args:
         url (str): base url of CerebralCortex-APIServer. For example, http://localhost/
@@ -212,7 +217,7 @@ def upload_stream_data(url: str, auth_token: str, data_file_path: str):
 
     Examples:
         >>> from cerebralcortex_rest import upload_stream_data
-        >>> upload_stream_data(url="http://localhost/api/v3/stream/{metadata_hash}", auth_token="jwt-aut-token")
+        >>> upload_stream_data(url="http://localhost/api/v3/stream/default/{metadata_hash}", auth_token="jwt-aut-token")
 
     """
     try:
@@ -229,7 +234,8 @@ def upload_stream_data(url: str, auth_token: str, data_file_path: str):
 
 def get_stream_metadata(url: str, auth_token: str):
     """
-    Get stream metadata from CC-ApiServer
+    Get stream metadata from CC-ApiServer. "default" in url is a study_name. change it if you have created a different study_name.
+         study_name must exist
 
     Args:
         url (str): url of user-config [GET] route of CC-ApiServer
@@ -243,7 +249,7 @@ def get_stream_metadata(url: str, auth_token: str):
 
     Examples:
         >>> from cerebralcortex_rest import get_stream_metadata
-        >>> get_stream_metadata(url="http://localhost/api/v3/stream/metadata/{stream_name}", auth_token="jwt-aut-token")
+        >>> get_stream_metadata(url="http://localhost/api/v3/stream/metadata/default/{stream_name}", auth_token="jwt-aut-token")
     """
     try:
         headers = {"Accept": "application/json", "Authorization": auth_token}
@@ -255,7 +261,8 @@ def get_stream_metadata(url: str, auth_token: str):
 
 def get_stream_data(url: str, auth_token: str):
     """
-    Get stream data from CC-ApiServer
+    Get stream data from CC-ApiServer. "default" in url is a study_name. change it if you have created a different study_name.
+         study_name must exist
 
     Args:
         url (str): url of user-config [GET] route of CC-ApiServer
@@ -269,7 +276,7 @@ def get_stream_data(url: str, auth_token: str):
 
     Examples:
         >>> from cerebralcortex_rest import get_stream_data
-        >>> get_stream_data(url="http://localhost/api/v3/stream/data/{stream_name}", auth_token="jwt-aut-token")
+        >>> get_stream_data(url="http://localhost/api/v3/stream/data/default/{stream_name}", auth_token="jwt-aut-token")
     """
     try:
         headers = {"Accept": "application/json", "Authorization": auth_token}
@@ -283,7 +290,8 @@ def get_stream_data(url: str, auth_token: str):
 
 def get_bucket_list(url: str, auth_token: str):
     """
-    Get buckets list from CC-ApiServer
+    Get buckets list from CC-ApiServer. "default" in url is a study_name. change it if you have created a different study_name.
+         study_name must exist
 
     Args:
         url (str): url of object [GET] route of CC-ApiServer
@@ -297,7 +305,7 @@ def get_bucket_list(url: str, auth_token: str):
 
     Examples:
         >>> from cerebralcortex_rest import get_bucket_list
-        >>> get_bucket_list(url="http://localhost/api/v3/bucket/", auth_token="jwt-aut-token")
+        >>> get_bucket_list(url="http://localhost/api/v3/bucket/default", auth_token="jwt-aut-token")
 
     """
     try:
@@ -310,7 +318,8 @@ def get_bucket_list(url: str, auth_token: str):
 
 def get_objects_list_in_bucket(url: str, auth_token: str):
     """
-    Get objects list in a bucket from CC-ApiServer
+    Get objects list in a bucket from CC-ApiServer. "default" in url is a study_name. change it if you have created a different study_name.
+         study_name must exist
 
     Args:
         url (str): url of object's list [GET] route of CC-ApiServer
@@ -324,7 +333,7 @@ def get_objects_list_in_bucket(url: str, auth_token: str):
 
     Examples:
         >>> from cerebralcortex_rest import get_objects_list_in_bucket
-        >>> get_objects_list_in_bucket(url="http://localhost/api/v3/bucket/{bucket_name}", auth_token="jwt-aut-token")
+        >>> get_objects_list_in_bucket(url="http://localhost/api/v3/bucket/default/{bucket_name}", auth_token="jwt-aut-token")
 
     """
     try:
@@ -337,7 +346,8 @@ def get_objects_list_in_bucket(url: str, auth_token: str):
 
 def get_objects_stats(url: str, auth_token: str):
     """
-    Get object stats from CC-ApiServer
+    Get object stats from CC-ApiServer. "default" in url is a study_name. change it if you have created a different study_name.
+         study_name must exist
 
     Args:
         url (str): url of object's stat [GET] route of CC-ApiServer
@@ -351,7 +361,7 @@ def get_objects_stats(url: str, auth_token: str):
 
     Examples:
         >>> from cerebralcortex_rest import get_objects_stats
-        >>> get_objects_stats(url="http://localhost/api/v3/bucket/stats/{bucket_name}/{object_name}", auth_token="jwt-aut-token")
+        >>> get_objects_stats(url="http://localhost/api/v3/bucket/stats/default/{bucket_name}/{object_name}", auth_token="jwt-aut-token")
     """
     try:
         headers = {"Accept": "application/json", "Authorization": auth_token}
@@ -363,7 +373,8 @@ def get_objects_stats(url: str, auth_token: str):
 
 def get_object(url: str, auth_token: str):
     """
-    Get object stats from CC-ApiServer
+    Get object stats from CC-ApiServer. "default" in url is a study_name. change it if you have created a different study_name.
+         study_name must exist
 
     Args:
         url (str): url of object (download) [GET] route of CC-ApiServer
@@ -377,7 +388,7 @@ def get_object(url: str, auth_token: str):
 
     Examples:
         >>> from cerebralcortex_rest import get_object
-        >>> get_object(url="http://localhost/api/v3/bucket/{bucket_name}/{object_name}", auth_token="jwt-aut-token")
+        >>> get_object(url="http://localhost/api/v3/bucket/default/{bucket_name}/{object_name}", auth_token="jwt-aut-token")
 
     """
     try:

@@ -17,7 +17,7 @@ with open(path.join(here, 'README.md')) as f:
 setup(
     name="cerebralcortex-restclient",
 
-    version='3.0.0a1',
+    version='3.1.0r1',
 
     description='REST client for CerebralCortex-APIServer.',
     long_description=long_description,
