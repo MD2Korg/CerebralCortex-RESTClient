@@ -34,8 +34,7 @@ def register_user(url: str, user_metadata: dict):
     """
 
     Args:
-        url (str): url of user register route of CC-ApiServer. "default" in url is a study_name. change it if you have created a different study_name.
-         study_name must exist
+        url (str): url of user register route of CC-ApiServer. "default" in url is a study_name. change it if you have created a different study_name. study_name must exist
         user_metadata (dict): metadata of a user
     Returns:
         dict: HTTP response.content
@@ -71,8 +70,7 @@ def register_user(url: str, user_metadata: dict):
 
 def login_user(url: str, username: str, password: str):
     """
-    Send credentials to CC-ApiServer and Authenticate a user. "default" in url is a study_name. change it if you have created a different study_name.
-         study_name must exist
+    Send credentials to CC-ApiServer and Authenticate a user. "default" in url is a study_name. change it if you have created a different study_name. study_name must exist
 
     Args:
         url (str): url of login route of CC-ApiServer
@@ -102,8 +100,7 @@ def login_user(url: str, username: str, password: str):
 
 def get_user_config(url: str, auth_token):
     """
-    Get user metadata from CC-ApiServer. "default" in url is a study_name. change it if you have created a different study_name.
-         study_name must exist
+    Get user metadata from CC-ApiServer. "default" in url is a study_name. change it if you have created a different study_name. study_name must exist
 
     Args:
         url (str): url of user-config [GET] route of CC-ApiServer
@@ -132,8 +129,7 @@ def get_user_config(url: str, auth_token):
 
 def register_stream(url: str, auth_token: str, stream_metadata: str):
     """
-    Send stream metadata to CC-ApiServer for registration. "default" in url is a study_name. change it if you have created a different study_name.
-         study_name must exist
+    Send stream metadata to CC-ApiServer for registration. "default" in url is a study_name. change it if you have created a different study_name. study_name must exist
 
     Args:
         url (str): url of stream-registration route of CC-ApiServer
@@ -201,8 +197,7 @@ def register_stream(url: str, auth_token: str, stream_metadata: str):
 
 def upload_stream_data(url: str, auth_token: str, data_file_path: str):
     """
-    Upload stream data to cerebralcortex storage using CC-ApiServer. "default" in url is a study_name. change it if you have created a different study_name.
-         study_name must exist
+    Upload stream data to cerebralcortex storage using CC-ApiServer. "default" in url is a study_name. change it if you have created a different study_name. study_name must exist
 
     Args:
         url (str): base url of CerebralCortex-APIServer. For example, http://localhost/
@@ -234,8 +229,7 @@ def upload_stream_data(url: str, auth_token: str, data_file_path: str):
 
 def get_stream_metadata(url: str, auth_token: str):
     """
-    Get stream metadata from CC-ApiServer. "default" in url is a study_name. change it if you have created a different study_name.
-         study_name must exist
+    Get stream metadata from CC-ApiServer. "default" in url is a study_name. change it if you have created a different study_name. study_name must exist
 
     Args:
         url (str): url of user-config [GET] route of CC-ApiServer
@@ -261,8 +255,7 @@ def get_stream_metadata(url: str, auth_token: str):
 
 def get_stream_data(url: str, auth_token: str):
     """
-    Get stream data from CC-ApiServer. "default" in url is a study_name. change it if you have created a different study_name.
-         study_name must exist
+    Get stream data from CC-ApiServer. "default" in url is a study_name. change it if you have created a different study_name. study_name must exist
 
     Args:
         url (str): url of user-config [GET] route of CC-ApiServer
@@ -290,8 +283,7 @@ def get_stream_data(url: str, auth_token: str):
 
 def get_bucket_list(url: str, auth_token: str):
     """
-    Get buckets list from CC-ApiServer. "default" in url is a study_name. change it if you have created a different study_name.
-         study_name must exist
+    Get buckets list from CC-ApiServer. "default" in url is a study_name. change it if you have created a different study_name. study_name must exist
 
     Args:
         url (str): url of object [GET] route of CC-ApiServer
@@ -318,8 +310,7 @@ def get_bucket_list(url: str, auth_token: str):
 
 def get_objects_list_in_bucket(url: str, auth_token: str):
     """
-    Get objects list in a bucket from CC-ApiServer. "default" in url is a study_name. change it if you have created a different study_name.
-         study_name must exist
+    Get objects list in a bucket from CC-ApiServer. "default" in url is a study_name. change it if you have created a different study_name. study_name must exist
 
     Args:
         url (str): url of object's list [GET] route of CC-ApiServer
@@ -346,8 +337,7 @@ def get_objects_list_in_bucket(url: str, auth_token: str):
 
 def get_objects_stats(url: str, auth_token: str):
     """
-    Get object stats from CC-ApiServer. "default" in url is a study_name. change it if you have created a different study_name.
-         study_name must exist
+    Get object stats from CC-ApiServer. "default" in url is a study_name. change it if you have created a different study_name. study_name must exist
 
     Args:
         url (str): url of object's stat [GET] route of CC-ApiServer
@@ -373,8 +363,7 @@ def get_objects_stats(url: str, auth_token: str):
 
 def get_object(url: str, auth_token: str):
     """
-    Get object stats from CC-ApiServer. "default" in url is a study_name. change it if you have created a different study_name.
-         study_name must exist
+    Get object stats from CC-ApiServer. "default" in url is a study_name. change it if you have created a different study_name. study_name must exist
 
     Args:
         url (str): url of object (download) [GET] route of CC-ApiServer
