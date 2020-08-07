@@ -1,62 +1,71 @@
 from os import path
-try: # for pip >= 10
-    from pip._internal.req import parse_requirements
-except ImportError: # for pip <= 9.0.3
-    from pip.req import parse_requirements
 from setuptools import setup, find_packages
 
 here = path.abspath(path.dirname(__file__))
 
-install_reqs = parse_requirements("./requirements.txt", session='hack')
-reqs = [str(ir.req) for ir in install_reqs]
+reqs = [
+    'PyJWT==1.7.1',
+    'cerebralcortex-kernel==3.3.0'
+]
+
 
 # Get the long description from the README file
 with open(path.join(here, 'README.md')) as f:
     long_description = f.read()
 
-setup(
-    name="cerebralcortex-restclient",
 
-    version='3.1.0r1',
+if __name__ == '__main__':
+    setup(
+        name="cerebralcortex-restclient",
 
-    description='REST client for CerebralCortex-APIServer.',
-    long_description=long_description,
+        version='3.3.0',
 
-    author='MD2K.org',
-    author_email='dev@md2k.org',
+        package_data={'': ['default.yml']},
 
-    license='BSD2',
-    url = 'https://github.com/MD2Korg/CerebralCortex-RESTClient/',
+        description='REST client for CerebralCortex-APIServer.',
+        long_description=long_description,
 
-    classifiers=[
+        author='MD2K.org',
+        author_email='dev@md2k.org',
 
-        'Development Status :: 5 - Production/Stable',
+        license='BSD2',
+        url = 'https://github.com/MD2Korg/CerebralCortex-RESTClient/',
 
-        'Intended Audience :: Healthcare Industry',
-        'Intended Audience :: Science/Research',
+        classifiers=[
 
-        'License :: OSI Approved :: BSD License',
+            'Development Status :: 5 - Production/Stable',
 
-        'Natural Language :: English',
+            'Intended Audience :: Healthcare Industry',
+            'Intended Audience :: Science/Research',
 
-        'Programming Language :: Python :: 3',
+            'License :: OSI Approved :: BSD License',
 
-        'Topic :: Scientific/Engineering :: Information Analysis',
-        'Topic :: System :: Distributed Computing'
-    ],
+            'Natural Language :: English',
 
-    keywords='mHealth machine-learning data-analysis',
+            'Programming Language :: Python :: 3',
 
-    # You can just specify the packages manually here if your project is
-    # simple. Or you can use find_packages().
-    packages=find_packages(exclude=['contrib', 'docs', 'tests']),
+            'Topic :: Scientific/Engineering :: Information Analysis',
+            'Topic :: System :: Distributed Computing'
+        ],
 
-    install_requires=reqs,
+        keywords='mHealth machine-learning data-analysis',
+
+        # You can just specify the packages manually here if your project is
+        # simple. Or you can use find_packages().
+        packages=find_packages(exclude=['contrib', 'docs', 'tests']),
+
+        # List run-time dependencies here.  These will be installed by pip when
+        # your project is installed. For an analysis of "install_requires" vs pip's
+        # requirements files see:
+        # https://packaging.python.org/en/latest/requirements.html
+        install_requires=reqs,
 
 
-    entry_points={
-        'console_scripts': [
-            'main=main:main'
-        ]
-    },
-)
+        entry_points={
+            'console_scripts': [
+                'main=main:main'
+            ]
+        },
+
+    )
+

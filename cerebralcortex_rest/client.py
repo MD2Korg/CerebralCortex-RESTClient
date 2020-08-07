@@ -37,7 +37,7 @@ def register_user(url: str, user_metadata: dict):
         url (str): url of user register route of CC-ApiServer. "default" in url is a study_name. change it if you have created a different study_name. study_name must exist
         user_metadata (dict): metadata of a user
     Returns:
-        dict: HTTP response.content
+        dict: HTTP response
 
     Raises:
         Exception: if user registration fails
@@ -45,8 +45,8 @@ def register_user(url: str, user_metadata: dict):
     Examples:
         >>> from cerebralcortex_rest import register_user
         >>> register_user(url="http://localhost/api/v3/user/default/register", user_metadata={
-                                  "username": "string",
-                                  "password": "string",
+                                  "username": "demo",
+                                  "password": "demo",
                                   "user_role": "string",
                                   "user_metadata": {
                                     "key": "string",
@@ -63,7 +63,7 @@ def register_user(url: str, user_metadata: dict):
             raise Exception("user_metadata object should be a dict.")
         headers = {"Accept": "application/json"}
         response = requests.post(url, json=user_metadata, headers=headers)
-        return json.loads(response.content)
+        return response
     except Exception as e:
         raise Exception("Login failed. " + str(e))
 
@@ -78,7 +78,7 @@ def login_user(url: str, username: str, password: str):
         password (str): password of the user
 
     Returns:
-        dict: HTTP response.content
+        HTTP response
 
     Raises:
         Exception: if authentication fails
@@ -93,12 +93,12 @@ def login_user(url: str, username: str, password: str):
         headers = {"Accept": "application/json"}
         response = requests.post(url, json=data, headers=headers)
 
-        return json.loads(response.content)
+        return response
     except Exception as e:
         raise Exception("Login failed. " + str(e))
 
 
-def get_user_config(url: str, auth_token):
+def get_user_settings(url: str, auth_token):
     """
     Get user metadata from CC-ApiServer. "default" in url is a study_name. change it if you have created a different study_name. study_name must exist
 
@@ -107,20 +107,20 @@ def get_user_config(url: str, auth_token):
         auth_token (str): auth token of a user
 
     Returns:
-        dict: HTTP response.content
+        dict: HTTP response
 
     Raises:
         Exception: if it fails to get user configs
 
     Examples:
-        >>> from cerebralcortex_rest import get_user_config
-        >>> get_user_config(url="http://localhost/api/v3/user/default/config", auth_token="jwt-auth-tocken")
+        >>> from cerebralcortex_rest import get_user_settings
+        >>> get_user_settings(url="http://localhost/api/v3/user/default/config", auth_token="jwt-auth-tocken")
 
     """
     try:
         headers = {"Accept": "application/json", "Authorization": auth_token}
         response = requests.get(url, headers=headers)
-        return json.loads(response.content)
+        return response
     except Exception as e:
         raise Exception("Failed to get user configs. " + str(e))
 
@@ -137,7 +137,7 @@ def register_stream(url: str, auth_token: str, stream_metadata: str):
         stream_metadata (dict): metadata of the stream
 
     Returns:
-        dict: HTTP response.content
+        HTTP response
 
     Raises:
         Exception: if stream registration fails
@@ -146,51 +146,45 @@ def register_stream(url: str, auth_token: str, stream_metadata: str):
         >>> from cerebralcortex_rest import register_stream
         >>> register_stream(url="http://localhost/api/v3/stream/default/register", auth_token="jwt-auth-token",
                             stream_metadata={
-                                          "name": "string",
-                                          "description": "string",
-                                          "data_descriptor": [
-                                            {
-                                              "name": "string",
-                                              "type": "string",
-                                              "attributes": [
+                                            "name": "test-stream-name",
+                                            "description": "some description",
+                                            "data_descriptor": [
                                                 {
-                                                  "key": "string",
-                                                  "value": "string"
-                                                }
-                                              ]
-                                            }
-                                          ],
-                                          "modules": [
-                                            {
-                                              "name": "string",
-                                              "version": "string",
-                                              "authors": [
-                                                {
-                                                  "developer_name": "string",
-                                                  "email": "string",
-                                                  "attributes": [
-                                                    {
-                                                      "key": "string",
-                                                      "value": "string"
+                                                    "name": "col1",
+                                                    "type": "string",
+                                                    "attributes": {
+                                                        "key": "string",
+                                                        "value": "string"
                                                     }
-                                                  ]
                                                 }
-                                              ],
-                                              "attributes": [
+                                            ],
+                                            "modules": [
                                                 {
-                                                  "key": "string",
-                                                  "value": "string"
+                                                    "name": "string",
+                                                    "version": "1.0",
+                                                    "authors": [
+                                                        {
+                                                            "name": "Nasir Ali",
+                                                            "email": "nasir.ali08@gmail.com",
+                                                            "attributes": {
+                                                                "key": "string",
+                                                                "value": "string"
+                                                            }
+                                                        }
+                                                    ],
+                                                    "attributes": {
+                                                        "key": "string",
+                                                        "value": "string"
+                                                    }
                                                 }
-                                              ]
-                                            }
-                                          ]
+                                            ]
                                         })
 
     """
     try:
         headers = {"Accept": "application/json", "Authorization": auth_token}
         response = requests.post(url, json=stream_metadata, headers=headers)
-        return json.loads(response.content)
+        return response
     except Exception as e:
         raise Exception("Stream registration failed. " + str(e))
 
@@ -205,14 +199,14 @@ def upload_stream_data(url: str, auth_token: str, data_file_path: str):
         data_file_path (str): stream data file path that needs to be uploaded
 
     Returns:
-        dict: HTTP response.content
+        HTTP response
 
     Raises:
         Exception: if stream data upload fails
 
     Examples:
         >>> from cerebralcortex_rest import upload_stream_data
-        >>> upload_stream_data(url="http://localhost/api/v3/stream/default/{metadata_hash}", auth_token="jwt-aut-token")
+        >>> upload_stream_data(url="http://localhost/api/v3/stream/default/{metadata_hash}", auth_token="jwt-aut-token", data_file_path="path/of/msgpack-file")
 
     """
     try:
@@ -222,7 +216,7 @@ def upload_stream_data(url: str, auth_token: str, data_file_path: str):
         headers = {"Accept": "application/json", "Authorization": auth_token}
         response = requests.put(url, files=files, headers=headers)
 
-        return json.loads(response.content)
+        return response
     except Exception as e:
         raise Exception("Stream data upload failed. " + str(e))
 
@@ -236,7 +230,7 @@ def get_stream_metadata(url: str, auth_token: str):
         auth_token (str): auth token of a user
 
     Returns:
-        dict: HTTP response.content
+        HTTP response
 
     Raises:
         Exception: if it fails to get stream metadata
@@ -248,7 +242,7 @@ def get_stream_metadata(url: str, auth_token: str):
     try:
         headers = {"Accept": "application/json", "Authorization": auth_token}
         response = requests.get(url, headers=headers)
-        return json.loads(response.content)
+        return response
     except Exception as e:
         raise Exception("Failed to get stream metadata. " + str(e))
 
@@ -262,7 +256,7 @@ def get_stream_data(url: str, auth_token: str):
         auth_token (str): auth token of a user
 
     Returns:
-        dict: HTTP response.content
+        HTTP response
 
     Raises:
         Exception: if it fails to get stream data
@@ -290,7 +284,7 @@ def get_bucket_list(url: str, auth_token: str):
         auth_token (str): auth token of a user
 
     Returns:
-        dict: HTTP response.content
+        HTTP response
 
     Raises:
         Exception: if it fails to get buckets list
@@ -303,7 +297,7 @@ def get_bucket_list(url: str, auth_token: str):
     try:
         headers = {"Accept": "application/json", "Authorization": auth_token}
         response = requests.get(url, headers=headers)
-        return json.loads(response.content)
+        return response
     except Exception as e:
         raise Exception("Failed to get buckets list. " + str(e))
 
@@ -317,7 +311,7 @@ def get_objects_list_in_bucket(url: str, auth_token: str):
         auth_token (str): auth token of a user
 
     Returns:
-        dict: HTTP response.content
+        HTTP response
 
     Raises:
         Exception: if it fails to get objects list in a buckets
@@ -330,7 +324,7 @@ def get_objects_list_in_bucket(url: str, auth_token: str):
     try:
         headers = {"Accept": "application/json", "Authorization": auth_token}
         response = requests.get(url, headers=headers)
-        return json.loads(response.content)
+        return response
     except Exception as e:
         raise Exception("Failed to objects list of a bucket. " + str(e))
 
@@ -344,7 +338,7 @@ def get_objects_stats(url: str, auth_token: str):
         auth_token (str): auth token of a user
 
     Returns:
-        dict: HTTP response.content
+        HTTP response
 
     Raises:
         Exception: if it fails to get object stats
@@ -356,7 +350,7 @@ def get_objects_stats(url: str, auth_token: str):
     try:
         headers = {"Accept": "application/json", "Authorization": auth_token}
         response = requests.get(url, headers=headers)
-        return json.loads(response.content)
+        return response
     except Exception as e:
         raise Exception("Failed to object's stats. " + str(e))
 
@@ -370,7 +364,7 @@ def get_object(url: str, auth_token: str):
         auth_token (str): auth token of a user
 
     Returns:
-        dict: HTTP response.content
+        HTTP response
 
     Raises:
         Exception: if it fails to get object
@@ -383,6 +377,6 @@ def get_object(url: str, auth_token: str):
     try:
         headers = {"Accept": "application/json", "Authorization": auth_token}
         response = requests.get(url, headers=headers)
-        return json.loads(response.content)
+        return response
     except Exception as e:
         raise Exception("Failed to object's stats. " + str(e))
