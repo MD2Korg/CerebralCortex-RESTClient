@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 here = path.abspath(path.dirname(__file__))
 
 reqs = [
-    'PyJWT==1.7.1',
+    'PyJWT==2.4.0',
     'cerebralcortex-kernel==3.3.0'
 ]
 
